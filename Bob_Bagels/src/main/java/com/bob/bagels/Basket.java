@@ -7,16 +7,34 @@ import java.util.List;
 public class Basket {
 
     private Item[] item = new Item[10];
+    private int basketCapacity = 0;
 
-    public boolean  addItemToBasket(Item newItem) {
+    public Basket() {}
+
+    public Basket(int basketCapacity) {
+        this.item = new Item[basketCapacity];
+    }
+
+    private Fill_Basket addItem(Item newItem) {
         for (int i = 0, j = this.item.length; i<j; i++) {
-            if(this.item[i] == null){
-                this.item[i] = newItem;
-                return true;
+            if (checkForItemDuplicates(this.item[i], newItem)) {
+                return new Fill_Basket(false, "Same Item cannot be added again", false);
             }
-
+            if (this.item[i] == null) {
+                this.item[i] = newItem;
+                this.basketCapacity++;
+                return new Fill_Basket(false, "Item added", true);
+            }
         }
-        return false;
+        return new Fill_Basket(false, "Err", false);
+    }
+
+     public Fill_Basket addItemToBasket(Item newItem) {
+        if (this.basketCapacity == this.item.length) {
+            return new Fill_Basket(true, "Basket Full", false);
+        }
+
+        return this.addItem(newItem);
     }
 
     public Item[] getItems() {
@@ -35,10 +53,18 @@ public class Basket {
                         return true;
                     }
                 } catch (NullPointerException nullPointerException) {
-                    return false;
+                    continue;
                 }
             }
         }
         return false;
+    }
+
+    private boolean checkForItemDuplicates(Item itemsInBasket, Item currentItem) {
+        try {
+            return itemsInBasket.equals(currentItem);
+        } catch (NullPointerException nullPointerException) {
+            return false;
+        }
     }
 }

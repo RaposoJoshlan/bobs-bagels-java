@@ -39,7 +39,7 @@ class BasketTest {
 
     @Test
     void addItemTest() {
-        boolean result = basket.addItemToBasket(item[0]);
+        boolean result = basket.addItemToBasket(item[0]).isAdded();
         assertTrue(result);
     }
 
@@ -65,5 +65,52 @@ class BasketTest {
 
         boolean result = basket.removeItemFromBasket(item[0]);
         assertTrue(result);
+    }
+
+    @Test
+    void removeItemNotInTheBasket() {
+        basket.addItemToBasket(item[0]);
+
+
+        boolean result = basket.removeItemFromBasket(item[1]);
+        assertFalse(result);
+    }
+
+    @Test
+    void isBasketFull() {
+
+        for(int i = 0, j = basket.getItems().length; i < j; i++) {
+            basket.addItemToBasket(item[i]);
+        }
+
+        boolean result = basket.addItemToBasket(item[1]).isFull();
+        assertTrue(result);
+    }
+
+    @Test
+    void checkMessage() {
+        String h = basket.addItemToBasket(item[0]).getMessage();
+        assertEquals("Item added", h);
+    }
+
+    @Test
+    void checkForDuplicateItemsMessage() {
+        basket.addItemToBasket(item[0]).getMessage();
+        String g = basket.addItemToBasket(item[0]).getMessage();
+        assertEquals(g,basket.addItemToBasket(item[0]).getMessage());
+    }
+
+    @Test
+    void increaseBasketCapacity() {
+        int newCap = 20;
+        basket = new Basket(newCap);
+        assertEquals(newCap, basket.getItems().length);
+    }
+
+    @Test
+    void notRemoveItemNotThereInBasket() {
+        boolean result = basket.removeItemFromBasket(item[0]);
+        assertFalse(result);
+
     }
 }

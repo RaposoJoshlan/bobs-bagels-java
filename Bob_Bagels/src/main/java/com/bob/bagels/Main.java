@@ -1,14 +1,28 @@
 package com.bob.bagels;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class Main {
     public static void main(String[] args) {
         Basket basket = new Basket();
-        Item item = new Item();
-        basket.addItemToBasket(item);
-        basket.removeItemFromBasket(item);
-        System.out.println(basket.getItems().length);
+        Item[] item = {
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item() };
+
+        for(int i = 0, j = item.length; i < j; i++) {
+            basket.addItemToBasket(item[i]);
+        }
+        //boolean result = basket.addItemToBasket(item[11]).isAdded();
+        String g = basket.addItemToBasket(item[1]).getMessage();
+        System.out.println(g);
 
     }
 }
